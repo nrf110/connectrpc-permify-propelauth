@@ -1,0 +1,62 @@
+{
+  "name": "connectrpc-permify-propelauth",
+  "dockerFile": "Dockerfile",
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
+  "features": {
+    "ghcr.io/nrf110/devcontainer-features/claude-mcp-context7:1.1": {}
+  },
+  "mounts": [
+    "source=claude-code-config,target=/home/vscode/.claude,type=volume"
+  ],
+  "remoteUser": "vscode",
+  "remoteEnv": {
+    "CLAUDE_CODE_CONFIG_PATH": "/home/vscode/.claude"
+  },
+  "capAdd": [
+    "SYS_PTRACE"
+  ],
+  "hostRequirements": {
+    "memory": "4gb"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.go",
+        "stevenchen.vscode-adr-manager",
+        "mads-hartmann.bash-ide-vscode",
+        "bufbuild.vscode-buf",
+        "ms-vscode.extension-test-runner",
+        "codezombiech.gitignore",
+        "ms-vscode.makefile-tools",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "evidence.sqltools-bigquery-driver",
+        "42crunch.vscode-openapi",
+        "ms-playwright.playwright",
+        "hashicorp.terraform",
+        "bahramjoharshamshiri.hcl-lsp",
+        "humao.rest-client",
+        "gruntfuggly.todo-tree",
+        "github.vscode-github-actions",
+        "eriklynd.json-tools",
+        "aaron-bond.better-comments",
+        "streetsidesoftware.code-spell-checker",
+        "yoavbls.pretty-ts-errors",
+        "usernamehw.errorlens",
+        "esbenp.prettier-vscode",
+        "anthropic.claude-code",
+        "augment.vscode-augment",
+        "github.vscode-pull-request-github"
+      ]
+    },
+    "jetbrains": {
+      "backend": "GoLand",
+      "plugins": [
+        "com.intellij.bigdatatools.core",
+        "com.intellij.bigdatatools.kafka",
+        "com.intellij.ml.llm"
+      ]
+    }
+  }
+}

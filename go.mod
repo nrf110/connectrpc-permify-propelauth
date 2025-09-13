@@ -1,11 +1,11 @@
 module github.com/nrf110/connectrpc-permify-propelauth
 
-go 1.24.0
+go 1.25.0
 
 require (
 	connectrpc.com/connect v1.18.1
 	github.com/google/uuid v1.3.0
-	github.com/nrf110/connectrpc-permify v0.4.0
+	github.com/nrf110/connectrpc-permify v0.5.0
 	github.com/ovechkin-dm/mockio v1.0.2
 	github.com/propelauth/propelauth-go v0.26.2
 	github.com/stretchr/testify v1.11.1

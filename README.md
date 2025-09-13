@@ -22,23 +22,21 @@ import (
 
     connectpermify "github.com/nrf110/connectrpc-permify/pkg"
     propelauth "github.com/nrf110/connectrpc-permify-propelauth/pkg"
+    propelclient "github.com/propelauth/propelauth-go/pkg"
 )
 
 func main() {
-    // Configure PropelAuth
-    config := propelauth.PropelConfig{
-        AuthURL: "https://your-auth-url.propelauth.com",
-        ApiKey:  "your-api-key",
+    // Initialize PropelAuth client
+    client, err := propelclient.InitBaseAuth("https://your-auth-url.propelauth.com", "your-api-key", nil)
+    if err != nil {
+        log.Fatal("Failed to initialize PropelAuth client:", err)
     }
 
     // Create ID extractor for API keys without associated users
     idExtractor := propelauth.DefaultIDExtractor("service_id")
 
     // Create the authenticator
-    authenticator, err := propelauth.NewPropelAuthenticator(config, idExtractor)
-    if err != nil {
-        log.Fatal("Failed to create authenticator:", err)
-    }
+    authenticator := propelauth.NewPropelAuthenticator(client, idExtractor)
 
     // Use with ConnectRPC Permify interceptor
     interceptor := connectpermify.NewAuthorizationInterceptor(authenticator, permifyClient)
@@ -137,14 +135,13 @@ The dev container comes pre-configured with:
 
 ### Types
 
-- `PropelConfig` - Configuration for PropelAuth connection
 - `PropelAuthenticator` - Main authenticator implementation
 - `PropelAuthPrincipal` - Contains authenticated user and organization data
 - `IDExtractor` - Function type for extracting IDs from API key metadata
 
 ### Functions
 
-- `NewPropelAuthenticator(config PropelConfig, idExtractor IDExtractor)` - Creates new authenticator
+- `NewPropelAuthenticator(client propelauth.ClientInterface, idExtractor IDExtractor)` - Creates new authenticator
 - `GetPrincipal(ctx context.Context)` - Retrieves principal from request context
 - `DefaultIDExtractor(metadataKey string)` - Creates default ID extractor for API keys
 

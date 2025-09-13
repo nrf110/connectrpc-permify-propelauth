@@ -10,11 +10,6 @@ import (
 	propelauth "github.com/propelauth/propelauth-go/pkg"
 )
 
-type PropelConfig struct {
-	ApiKey  string
-	AuthURL string
-}
-
 type PropelAuthenticator struct {
 	client      propelauth.ClientInterface
 	idExtractor IDExtractor
@@ -28,16 +23,11 @@ func GetPrincipal(ctx context.Context) *PropelAuthPrincipal {
 	return ctx.Value(PrincipalKey).(*PropelAuthPrincipal)
 }
 
-func NewPropelAuthenticator(config PropelConfig, idExtractor IDExtractor) (*PropelAuthenticator, error) {
-	client, err := propelauth.InitBaseAuth(config.AuthURL, config.ApiKey, nil)
-	if err != nil {
-		return nil, err
-	}
-
+func NewPropelAuthenticator(client propelauth.ClientInterface, idExtractor IDExtractor) *PropelAuthenticator {
 	return &PropelAuthenticator{
 		client:      client,
 		idExtractor: idExtractor,
-	}, nil
+	}
 }
 
 func (propel *PropelAuthenticator) Authenticate(ctx context.Context, req connect.AnyRequest) (*connectpermify.AuthenticationResult, error) {

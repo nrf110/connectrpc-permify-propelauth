@@ -158,59 +158,37 @@ func createTestAPIKeyValidationWithoutUser() *models.APIKeyValidation {
 
 // Test cases for NewPropelAuthenticator
 func TestNewPropelAuthenticator(t *testing.T) {
-	t.Run("ValidConfig", func(t *testing.T) {
-		config := PropelConfig{
-			AuthURL: "https://auth.example.com",
-			ApiKey:  "test-api-key",
-		}
+	t.Run("ValidClientAndExtractor", func(t *testing.T) {
+		mock.SetUp(t)
+		mockClient := mock.Mock[propelauth.ClientInterface]()
 		idExtractor := DefaultIDExtractor("service_id")
 
-		// Note: This test will fail because we can't actually initialize PropelAuth client
-		// In a real test environment, you would mock the propelauth.InitBaseAuth function
-		authenticator, err := NewPropelAuthenticator(config, idExtractor)
+		authenticator := NewPropelAuthenticator(mockClient, idExtractor)
 
-		// For now, we expect an error since we can't connect to a real PropelAuth service
-		assert.Error(t, err)
-		assert.Nil(t, authenticator)
+		require.NotNil(t, authenticator)
+		assert.Equal(t, mockClient, authenticator.client)
+		assert.NotNil(t, authenticator.idExtractor)
 	})
 
-	t.Run("EmptyAuthURL", func(t *testing.T) {
-		config := PropelConfig{
-			AuthURL: "",
-			ApiKey:  "test-api-key",
-		}
+	t.Run("NilClient", func(t *testing.T) {
 		idExtractor := DefaultIDExtractor("service_id")
 
-		authenticator, err := NewPropelAuthenticator(config, idExtractor)
+		authenticator := NewPropelAuthenticator(nil, idExtractor)
 
-		assert.Error(t, err)
-		assert.Nil(t, authenticator)
+		require.NotNil(t, authenticator)
+		assert.Nil(t, authenticator.client)
+		assert.NotNil(t, authenticator.idExtractor)
 	})
 
-	t.Run("EmptyApiKey", func(t *testing.T) {
-		config := PropelConfig{
-			AuthURL: "https://auth.example.com",
-			ApiKey:  "",
-		}
-		idExtractor := DefaultIDExtractor("service_id")
+	t.Run("NilIDExtractor", func(t *testing.T) {
+		mock.SetUp(t)
+		mockClient := mock.Mock[propelauth.ClientInterface]()
 
-		authenticator, err := NewPropelAuthenticator(config, idExtractor)
+		authenticator := NewPropelAuthenticator(mockClient, nil)
 
-		assert.Error(t, err)
-		assert.Nil(t, authenticator)
-	})
-
-	t.Run("InvalidAuthURL", func(t *testing.T) {
-		config := PropelConfig{
-			AuthURL: "invalid-url",
-			ApiKey:  "test-api-key",
-		}
-		idExtractor := DefaultIDExtractor("service_id")
-
-		authenticator, err := NewPropelAuthenticator(config, idExtractor)
-
-		assert.Error(t, err)
-		assert.Nil(t, authenticator)
+		require.NotNil(t, authenticator)
+		assert.Equal(t, mockClient, authenticator.client)
+		assert.Nil(t, authenticator.idExtractor)
 	})
 }
 

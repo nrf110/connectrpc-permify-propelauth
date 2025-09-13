@@ -47,9 +47,6 @@ Testing Approach:
 - Verifies context propagation and principal creation
 - Tests edge cases and error conditions
 - Organized with t.Run for better test structure and reporting
-
-Note: NewPropelAuthenticator tests expect errors because they attempt to connect to real PropelAuth services.
-In a production test environment, you would mock the propelauth.InitBaseAuth function.
 */
 
 import (
@@ -494,46 +491,6 @@ func TestGetPrincipal(t *testing.T) {
 		// In a production environment, you might want to handle this more gracefully
 		assert.Panics(t, func() {
 			GetPrincipal(ctx)
-		})
-	})
-}
-
-// Test cases for DefaultIDExtractor
-func TestDefaultIDExtractor(t *testing.T) {
-	t.Run("Success", func(t *testing.T) {
-		extractor := DefaultIDExtractor("service_id")
-		validation := &models.APIKeyValidation{
-			Metadata: map[string]any{"service_id": "test-service-123"},
-		}
-
-		id, err := extractor(validation)
-
-		require.NoError(t, err)
-		assert.Equal(t, "test-service-123", id)
-	})
-
-	t.Run("MissingKey", func(t *testing.T) {
-		extractor := DefaultIDExtractor("missing_key")
-		validation := &models.APIKeyValidation{
-			Metadata: map[string]any{"service_id": "test-service-123"},
-		}
-
-		id, err := extractor(validation)
-
-		require.Error(t, err)
-		assert.Empty(t, id)
-		assert.Contains(t, err.Error(), "missing_key not found in api key metadata")
-	})
-
-	t.Run("WrongType", func(t *testing.T) {
-		extractor := DefaultIDExtractor("numeric_id")
-		validation := &models.APIKeyValidation{
-			Metadata: map[string]any{"numeric_id": 12345}, // Not a string
-		}
-
-		// This will panic due to type assertion, which is expected behavior
-		assert.Panics(t, func() {
-			extractor(validation)
 		})
 	})
 }

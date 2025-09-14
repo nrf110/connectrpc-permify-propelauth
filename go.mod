@@ -4,8 +4,8 @@ go 1.25.0
 
 require (
 	connectrpc.com/connect v1.18.1
-	github.com/google/uuid v1.3.0
-	github.com/nrf110/connectrpc-permify v0.5.0
+	github.com/google/uuid v1.6.0
+	github.com/nrf110/connectrpc-permify v0.6.0
 	github.com/ovechkin-dm/mockio v1.0.2
 	github.com/propelauth/propelauth-go v0.26.2
 	github.com/stretchr/testify v1.11.1
@@ -21,8 +21,12 @@ require (
 	github.com/ovechkin-dm/go-dyno v0.5.3 // indirect
 	github.com/petermattis/goid v0.0.0-20250813065127-a731cc31b4fe // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	golang.org/x/net v0.43.0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/text v0.28.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250826171959-ef028d996bc1 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250826171959-ef028d996bc1 // indirect
+	google.golang.org/grpc v1.75.1 // indirect
 	google.golang.org/protobuf v1.36.8 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
